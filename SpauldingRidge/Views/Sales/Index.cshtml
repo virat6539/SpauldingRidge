@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SpauldingRidge.Models.SalesData>
+
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header">
+            <h2 class="card-title">Sales Forecasting</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" class="form-horizontal">
+                <div class="form-group row mb-2">
+                    <label for="year" class="col-sm-2 col-form-label">Year</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="year" name="year" placeholder="Enter year">
+                    </div>
+                </div>
+                <div class="form-group row mb-2">
+                    <label for="percentage" class="col-sm-2 col-form-label">Percentage Increase</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="percentage" name="percentage" placeholder="Enter percentage increase">
+                    </div>
+                </div>
+                <div class="form-group row mb-2">
+                    <div class="col-sm-10 offset-sm-2">
+                        <button type="submit" class="btn btn-primary">Get Sales</button>
+                    </div>
+                </div>
+            </form>
+            @if (ViewBag.TotalSales != null)
+            {
+                <div class="mt-4">
+                    <h3>Total Sales: @ViewBag.TotalSales</h3>
+                    <h3>Total Incremented Sales: @ViewBag.TotalIncrementedSales</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>State</th>
+                                <th>Sales</th>
+                                <th>Incremented Sales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.State</td>
+                                    <td>@item.Sales</td>
+                                    <td>@item.IncrementedSales</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <form method="get" asp-action="DownloadCsv">
+                        <input type="hidden" name="year" value="@ViewContext.HttpContext.Request.Form["year"]" />
+                        <input type="hidden" name="percentage" value="@ViewContext.HttpContext.Request.Form["percentage"]" />
+                        <button type="submit" class="btn btn-secondary">Download CSV</button>
+                    </form>
+                    <a class="btn btn-info mt-3" asp-action="Chart" asp-route-year="@ViewContext.HttpContext.Request.Form["year"]" asp-route-percentage="@ViewContext.HttpContext.Request.Form["percentage"]">View Chart</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

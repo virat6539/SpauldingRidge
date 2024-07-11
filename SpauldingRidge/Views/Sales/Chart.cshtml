@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Sales Chart";
+    var year = ViewBag.Year;
+    var percentage = ViewBag.Percentage;
+}
+
+<div class="container mt-5">
+    <h2>Sales Chart for Year @year with @percentage% Increase</h2>
+    <div class="card">
+        <div class="card-body">
+            <!-- Aggregated Sales Chart -->
+            <canvas id="aggregatedSalesChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+    <h3 class="mt-5">Breakdown by State</h3>
+    <div class="card">
+        <div class="card-body">
+            <!-- Breakdown by State Chart -->
+            <canvas id="stateBreakdownChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('@Url.Action("GetAggregatedData", new { year = year, percentage = percentage })')
+            .then(response => response.json())
+            .then(data => {
+                var ctx = document.getElementById('aggregatedSalesChart').getContext('2d');
+                var aggregatedSalesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Total Sales', 'Total Incremented Sales'],
+                        datasets: [
+                            {
+                                label: 'Sales',
+                                data: [data.totalSales, data.totalIncrementedSales],
+                                backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+
+        fetch('@Url.Action("GetChartData", new { year = year, percentage = percentage })')
+            .then(response => response.json())
+            .then(data => {
+                var labels = data.map(item => item.state);
+                var salesData = data.map(item => item.sales);
+                var incrementedSalesData = data.map(item => item.incrementedSales);
+
+                var stateCtx = document.getElementById('stateBreakdownChart').getContext('2d');
+                var stateBreakdownChart = new Chart(stateCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Sales by State',
+                                data: salesData,
+                                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                                borderColor: 'rgba(255, 159, 64, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Incremented Sales by State',
+                                data: incrementedSalesData,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    });
+</script>
