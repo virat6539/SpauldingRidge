@@ -26,13 +26,9 @@
         var year = @ViewBag.Year;
         var percentage = @ViewBag.Percentage;
 
-        console.log("Year: " + year);
-        console.log("Percentage: " + percentage);
-
         fetch('@Url.Action("GetAggregatedData")?year=' + year + '&percentage=' + percentage)
             .then(response => response.json())
             .then(data => {
-                console.log("Aggregated Data:", data); // Debug print statement to verify data
                 var ctx = document.getElementById('aggregatedSalesChart').getContext('2d');
                 var aggregatedSalesChart = new Chart(ctx, {
                     type: 'bar',
@@ -61,7 +57,7 @@
         fetch('@Url.Action("GetChartData")?year=' + year + '&percentage=' + percentage)
             .then(response => response.json())
             .then(data => {
-                console.log("Chart Data:", data); // Debug print statement to verify data
+                console.log(data); 
                 var labels = data.map(item => item.state);
                 var salesData = data.map(item => item.sales);
                 var incrementedSalesData = data.map(item => item.incrementedSales);

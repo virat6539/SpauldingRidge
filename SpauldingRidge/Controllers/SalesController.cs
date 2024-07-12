@@ -186,8 +186,7 @@ namespace SpauldingRidge.Controllers
 
         public IActionResult GetAggregatedData(int year, double percentage)
         {
-            Console.WriteLine("AggregatedData Year: " + year); // Debug print statement
-            Console.WriteLine("AggregatedData Percentage: " + percentage); // Debug print statement
+            Console.WriteLine(year);
 
             var totalSales = _context.Orders
                 .Where(o => o.OrderDate.HasValue && o.OrderDate.Value.Year == year)
@@ -239,7 +238,6 @@ namespace SpauldingRidge.Controllers
                     writer.Flush();
                     memoryStream.Position = 0;
 
-                    // Use a new MemoryStream to return the file
                     var result = new FileStreamResult(new MemoryStream(memoryStream.ToArray()), "text/csv")
                     {
                         FileDownloadName = $"SalesForecast_{year}.csv"
