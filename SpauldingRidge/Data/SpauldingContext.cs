@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SpauldingRidge.Models;
 
-namespace SpauldingRidge.Models;
+namespace SpauldingRidge.Data;
 
 public partial class SpauldingContext : DbContext
 {

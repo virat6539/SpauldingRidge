@@ -4,7 +4,7 @@
     var percentage = ViewBag.Percentage;
 }
 
-<div class="container mt-5">
+<div class="container scrollable-content mt-5">
     <h2>Sales Chart for Year @year with @percentage% Increase</h2>
     <div class="card">
         <div class="card-body">
@@ -23,9 +23,16 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('@Url.Action("GetAggregatedData", new { year = year, percentage = percentage })')
+        var year = @ViewBag.Year;
+        var percentage = @ViewBag.Percentage;
+
+        console.log("Year: " + year);
+        console.log("Percentage: " + percentage);
+
+        fetch('@Url.Action("GetAggregatedData")?year=' + year + '&percentage=' + percentage)
             .then(response => response.json())
             .then(data => {
+                console.log("Aggregated Data:", data); // Debug print statement to verify data
                 var ctx = document.getElementById('aggregatedSalesChart').getContext('2d');
                 var aggregatedSalesChart = new Chart(ctx, {
                     type: 'bar',
@@ -51,9 +58,10 @@
                 });
             });
 
-        fetch('@Url.Action("GetChartData", new { year = year, percentage = percentage })')
+        fetch('@Url.Action("GetChartData")?year=' + year + '&percentage=' + percentage)
             .then(response => response.json())
             .then(data => {
+                console.log("Chart Data:", data); // Debug print statement to verify data
                 var labels = data.map(item => item.state);
                 var salesData = data.map(item => item.sales);
                 var incrementedSalesData = data.map(item => item.incrementedSales);
@@ -91,3 +99,12 @@
             });
     });
 </script>
+
+<style>
+    .scrollable-content {
+        max-height: 80vh; /* Adjust the max height as needed */
+        overflow-y: auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+</style>

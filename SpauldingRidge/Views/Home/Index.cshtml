@@ -2,14 +2,30 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="jumbotron text-center">
-    <h1 class="display-4">Welcome to SpauldingRidge</h1>
-    <p class="lead">Your one-stop solution for sales forecasting and analysis.</p>
-    <hr class="my-4">
-    <p>Click the icon below to access the sales forecasting tool.</p>
-    <a class="btn btn-primary btn-lg" href="/Sales" role="button">
-        <i class="fas fa-chart-line fa-3x"></i>
-        <br />
-        Sales Forecasting
-    </a>
+<div class="video-background">
+    <div class="video-foreground">
+        <video width="100%" height="auto" muted loop autoplay>
+            <source src="~/videos/background-video.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="overlay-content">
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Welcome to SpauldingRidge</h1>
+            <p class="lead">Your one-stop solution for sales forecasting and analysis.</p>
+            <hr class="my-4">
+            <p>Click the icons below to access the sales forecasting tool.</p>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-primary btn-lg mr-3" href="/Sales" role="button" style="margin-right: 15px;">
+                    <i class="fas fa-chart-line fa-3x"></i>
+                    <br />
+                    Global Sales Forecasting
+                </a>
+                <a class="btn btn-secondary btn-lg" href="/Sales/StateWise" role="button" style="margin-left: 15px;">
+                    <i class="fas fa-map-marker-alt fa-3x"></i>
+                    <br />
+                    State-wise Sales Forecasting
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

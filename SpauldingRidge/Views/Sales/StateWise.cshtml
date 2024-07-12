@@ -1,0 +1,87 @@
+﻿@model IEnumerable<SpauldingRidge.Models.SalesData>
+
+@{
+    ViewData["Title"] = "State-wise Sales Forecasting";
+    var step = ViewBag.Step ?? 1;
+}
+
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header">
+            <h2 class="card-title">State-wise Sales Forecasting</h2>
+        </div>
+        <div class="card-body">
+            @if (step == 1)
+            {
+                <form method="post" class="form-horizontal" asp-action="StateWise">
+                    <div class="form-group row mb-2">
+                        <label for="state" class="col-sm-2 col-form-label">Select State</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="state" name="state">
+                                @foreach (var state in ViewBag.States)
+                                {
+                                    <option value="@state">@state</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="year" class="col-sm-2 col-form-label">Year</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="year" name="year" value="@DateTime.Now.Year" placeholder="Enter year">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Next</button>
+                        </div>
+                    </div>
+                </form>
+            }
+            else if (step == 2)
+            {
+                <form method="post" class="form-horizontal" asp-action="StateWise">
+                    <input type="hidden" name="state" value="@ViewBag.State" />
+                    <input type="hidden" name="year" value="@ViewBag.Year" />
+                    <div class="form-group row mb-2">
+                        <label for="percentageIncrease" class="col-sm-2 col-form-label">Percentage Increase for @ViewBag.State</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="percentageIncrease" name="percentageIncrease" placeholder="Enter percentage increase">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </div>
+                    </div>
+                </form>
+            }
+            else if (step == 3)
+            {
+                <div>
+                    <h3>Total Sales: @ViewBag.TotalSales</h3>
+                    <h3>Total Incremented Sales: @ViewBag.TotalIncrementedSales</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>State</th>
+                                <th>Sales</th>
+                                <th>Incremented Sales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.State</td>
+                                    <td>@item.Sales</td>
+                                    <td>@item.IncrementedSales</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
