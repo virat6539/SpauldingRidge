@@ -27,6 +27,14 @@
             </form>
             @if (ViewBag.TotalSales != null)
             {
+                <div class="d-flex justify-content-end mt-3">
+                    <form method="get" asp-action="DownloadCsv" class="mr-2">
+                        <input type="hidden" name="year" value="@ViewBag.Year" />
+                        <input type="hidden" name="percentage" value="@ViewBag.Percentage" />
+                        <button type="submit" class="btn btn-secondary">Download CSV</button>
+                    </form>
+                    <a class="btn btn-info" asp-action="Chart" asp-route-year="@ViewBag.Year" asp-route-percentage="@ViewBag.Percentage">View Chart</a>
+                </div>
                 <div class="mt-4">
                     <h3>Total Sales: @ViewBag.TotalSales</h3>
                     <h3>Total Incremented Sales: @ViewBag.TotalIncrementedSales</h3>
@@ -49,14 +57,7 @@
                             }
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-end mt-3">
-                        <form method="get" asp-action="DownloadCsv" class="mr-2">
-                            <input type="hidden" name="year" value="@ViewBag.Year" />
-                            <input type="hidden" name="percentage" value="@ViewBag.Percentage" />
-                            <button type="submit" class="btn btn-secondary">Download CSV</button>
-                        </form>
-                        <a class="btn btn-info" asp-action="Chart" asp-route-year="@ViewBag.Year" asp-route-percentage="@ViewBag.Percentage">View Chart</a>
-                    </div>
+                    
                 </div>
             }
         </div>
